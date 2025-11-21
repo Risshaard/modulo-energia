@@ -12,18 +12,10 @@
         }
 
         body {
-            font-family: 'Century Gothic', Arial, sans-serif;
-            background: linear-gradient(135deg, #FFEFDB 0%, #FFE6A7 30%, #FFD08A 60%, #FFB347 100%);
-            background-size: 400% 400%;
-            animation: rainbowGradient 15s ease infinite;
+            font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             padding: 20px;
-        }
-
-        @keyframes rainbowGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         .container {
@@ -36,26 +28,20 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #ff9500 0%, #ffd42a 50%, #ff9500 100%);
-            background-size: 200% 200%;
-            animation: headerGradient 8s ease infinite;
-            color: #2b2b2b;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            color: #ffffff;
             padding: 50px 40px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        @keyframes headerGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            border-bottom: 4px solid #0066cc;
         }
 
         .header h1 {
             font-size: 2.8em;
             margin-bottom: 15px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -0.5px;
         }
 
         .header p {
@@ -88,14 +74,14 @@
         }
 
         .menu-card {
-            background: linear-gradient(135deg, #ffffff 0%, #fff8f0 100%);
-            border: 3px solid #ffa94d;
-            border-radius: 25px;
+            background: #ffffff;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
             padding: 45px 35px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
             position: relative;
             overflow: hidden;
         }
@@ -117,9 +103,9 @@
         }
 
         .menu-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            border-color: #28a745;
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            border-color: #0066cc;
         }
 
         .menu-card .icon {
@@ -138,11 +124,11 @@
 
         .menu-card h3 {
             font-size: 2em;
-            color: #667eea;
+            color: #1e3c72;
             margin-bottom: 18px;
             position: relative;
             z-index: 1;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .menu-card p {
@@ -157,8 +143,9 @@
         .theory-nav {
             background: #f8f9fa;
             padding: 20px;
-            border-radius: 15px;
+            border-radius: 8px;
             margin-bottom: 30px;
+            border: 1px solid #e1e8ed;
         }
 
         .theory-nav h3 {
@@ -297,14 +284,14 @@
 
         .device-card {
             background: white;
-            border: 4px solid #e9ecef;
-            border-radius: 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
             padding: 35px 25px;
             width: 220px;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             position: relative;
         }
 
@@ -312,16 +299,16 @@
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 20px;
-            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(102, 126, 234, 0.1));
+            border-radius: 8px;
+            background: rgba(0, 102, 204, 0.05);
             opacity: 0;
-            transition: opacity 0.4s;
+            transition: opacity 0.3s;
         }
 
         .device-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            border-color: #0066cc;
         }
 
         .device-card:hover::after {
@@ -330,9 +317,9 @@
 
         .device-card.selected {
             border-color: #28a745;
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
-            transform: scale(1.05);
+            background: #f0f9f4;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+            transform: scale(1.02);
         }
 
         .device-card.selected::before {
@@ -400,36 +387,35 @@
             flex-wrap: wrap;
             gap: 18px;
             padding-bottom: 15px;
-            border-bottom: 3px solid #f8f9fa;
+            border-bottom: 2px solid #e1e8ed;
         }
 
         .section-title {
             font-size: 1.6em;
-            color: #667eea;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(102, 126, 234, 0.1);
+            color: #1e3c72;
+            font-weight: 600;
         }
 
         .speak-btn {
             padding: 8px 16px;
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background: #28a745;
             color: white;
             border: none;
-            border-radius: 20px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
             font-weight: 600;
         }
 
         .speak-btn:hover {
-            background: linear-gradient(135deg, #218838 0%, #1ba378 100%);
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+            background: #218838;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
         }
 
         .speak-btn:active {
@@ -437,7 +423,7 @@
         }
 
         .speak-btn.speaking {
-            background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);
+            background: #dc3545;
             animation: pulse 1s infinite;
         }
 
@@ -447,16 +433,17 @@
         }
 
         .prompt-box {
-            background: #1e1e1e;
-            color: #00ff00;
+            background: #2d3748;
+            color: #e2e8f0;
             padding: 25px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             margin: 20px 0;
             position: relative;
             white-space: pre-wrap;
             line-height: 1.6;
             font-size: 14px;
+            border: 1px solid #4a5568;
         }
 
         .copy-btn {
@@ -464,32 +451,33 @@
             top: 10px;
             right: 10px;
             padding: 8px 15px;
-            background: #667eea;
+            background: #0066cc;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 12px;
+            font-weight: 600;
         }
 
         .copy-btn:hover {
-            background: #5568d3;
+            background: #0052a3;
         }
 
         .btn {
             padding: 18px 45px;
             border: none;
-            border-radius: 30px;
-            font-size: 19px;
-            font-weight: bold;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             text-transform: none;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .btn:active {
@@ -497,48 +485,48 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0066cc;
             color: white;
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            background: #0052a3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background: #28a745;
             color: white;
         }
 
         .btn-success:hover {
-            background: linear-gradient(135deg, #218838 0%, #1ba378 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.5);
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+            background: #6c757d;
             color: white;
         }
 
         .btn-secondary:hover {
-            background: linear-gradient(135deg, #5a6268 0%, #4e555b 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.5);
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
         }
 
         .btn-warning {
-            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            background: #ffc107;
             color: #333;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .btn-warning:hover {
-            background: linear-gradient(135deg, #e0a800 0%, #e68900 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.5);
+            background: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
         }
 
         .ai-links {
@@ -599,25 +587,25 @@
         }
 
         .highlight-box {
-            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
-            border-left: 6px solid #ffc107;
+            background: #f0f4f8;
+            border-left: 4px solid #0066cc;
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 8px;
             margin: 25px 0;
-            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
-            border: 2px solid #ffe69c;
-            border-left: 6px solid #ffc107;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+            border: 1px solid #d1dce5;
+            border-left: 4px solid #0066cc;
         }
 
         .highlight-box h4 {
-            color: #856404;
+            color: #1e3c72;
             margin-bottom: 12px;
             font-size: 1.2em;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .highlight-box p, .highlight-box li {
-            color: #533f03;
+            color: #4a5568;
             line-height: 1.7;
         }
 
