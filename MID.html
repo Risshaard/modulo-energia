@@ -623,12 +623,38 @@
 
         /* CONTROLES MÓVILES */
         .mobile-controls {
-            display: none !important;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .mobile-controls.show {
+            display: flex;
         }
 
         .mobile-control-btn {
-            display: none !important;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s;
         }
+
+        .mobile-control-btn:active {
+            transform: scale(0.9);
+        }
+
+        .mobile-control-btn.start { background: #28a745; color: white; }
+        .mobile-control-btn.pause { background: #ffc107; color: #333; }
+        .mobile-control-btn.resume { background: #17a2b8; color: white; }
+        .mobile-control-btn.stop { background: #dc3545; color: white; }
 
         /* Controles específicos que aparecen al seleccionar dispositivo móvil */
         .device-controls {
@@ -641,9 +667,33 @@
             z-index: 1200;
         }
 
-        /* Controles flotantes fijos: ocultos por defecto */
+        /* Controles flotantes fijos: pequeños en el lado derecho */
         .device-controls-floating {
-            display: none !important;
+            position: fixed;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 1400;
+        }
+        
+        .device-controls-floating .control-btn {
+            min-width: 50px;
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 768px) {
+            .device-controls-floating {
+                right: 5px;
+            }
+            .device-controls-floating .control-btn {
+                min-width: 45px;
+                padding: 6px 8px;
+                font-size: 11px;
+            }
         }
 
         .device-controls .control-btn {
@@ -736,6 +786,45 @@
             }
             .main-menu {
                 grid-template-columns: 1fr;
+            }
+            
+            /* Hacer botones más compactos en móvil */
+            .btn {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+            
+            .speak-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn-container .btn {
+                width: 100%;
+            }
+            
+            .device-card {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .guide-section {
+                padding: 20px;
+            }
+            
+            .prompt-box {
+                font-size: 12px;
+                padding: 15px;
             }
         }
 
@@ -2190,10 +2279,43 @@ Por favor, realiza una evaluación formativa completa, estructurada en los sigui
             else if (key === 'd') stopReading();
         });
 
-        // Controles móviles: desactivados
+        // Controles móviles: botones pequeños flotantes
         function ensureMobileControls() {
-            // Controles flotantes desactivados para no molestar en móviles
-            return;
+            let mc = document.querySelector('.mobile-controls');
+            if (!mc) {
+                mc = document.createElement('div');
+                mc.className = 'mobile-controls';
+                mc.innerHTML = `
+                    <button class="mobile-control-btn start" aria-label="Iniciar" title="Iniciar" data-action="start">▶️</button>
+                    <button class="mobile-control-btn pause" aria-label="Pausar" title="Pausar" data-action="pause">⏸️</button>
+                    <button class="mobile-control-btn resume" aria-label="Reanudar" title="Reanudar" data-action="resume">▶️</button>
+                    <button class="mobile-control-btn stop" aria-label="Detener" title="Detener" data-action="stop">⏹️</button>
+                `;
+                document.body.appendChild(mc);
+                
+                // Agregar event listeners a los botones
+                mc.querySelectorAll('button[data-action]').forEach(btn => {
+                    const handler = function(e) {
+                        e.preventDefault();
+                        const action = this.getAttribute('data-action');
+                        if (action === 'start') startReadingCurrent();
+                        else if (action === 'pause') pauseReading();
+                        else if (action === 'resume') resumeReading();
+                        else if (action === 'stop') stopReading();
+                    };
+                    btn.addEventListener('click', handler);
+                    btn.addEventListener('touchend', handler);
+                });
+            }
+            const activeScreen = document.querySelector('.screen.active')?.id || '';
+            const showOnScreens = ['theorySection','visualGuide','auditivaGuide'];
+            if (window.innerWidth < 768 && showOnScreens.includes(activeScreen)) {
+                mc.style.display = 'flex';
+                mc.classList.add('show');
+            } else {
+                mc.style.display = 'none';
+                mc.classList.remove('show');
+            }
         }
 
         window.addEventListener('resize', () => {
@@ -2211,20 +2333,47 @@ Por favor, realiza una evaluación formativa completa, estructurada en los sigui
             const div = document.createElement('div');
             div.id = 'deviceControlsFloating';
             div.className = 'device-controls device-controls-floating';
-            div.style.cssText = 'position:fixed;right:20px;top:50%;transform:translateY(-50%);display:none;flex-direction:column;gap:10px;z-index:1400;';
-            div.setAttribute('aria-hidden','true');
             div.innerHTML = `
-                <button class="control-btn control-start" onclick="startReadingCurrent()" aria-label="Iniciar lectura" style="min-width:120px;padding:10px 14px;border:none;border-radius:12px;font-size:14px;font-weight:bold;cursor:pointer;background:#28a745;color:white;">▶️ Iniciar</button>
-                <button class="control-btn control-pause" onclick="pauseReading()" aria-label="Pausar lectura" style="min-width:120px;padding:10px 14px;border:none;border-radius:12px;font-size:14px;font-weight:bold;cursor:pointer;background:#ffc107;color:#333;">⏸️ Pausar</button>
-                <button class="control-btn control-resume" onclick="resumeReading()" aria-label="Reanudar lectura" style="min-width:120px;padding:10px 14px;border:none;border-radius:12px;font-size:14px;font-weight:bold;cursor:pointer;background:#17a2b8;color:white;">▶️ Reanudar</button>
-                <button class="control-btn control-stop" onclick="stopReading()" aria-label="Detener lectura" style="min-width:120px;padding:10px 14px;border:none;border-radius:12px;font-size:14px;font-weight:bold;cursor:pointer;background:#dc3545;color:white;">⏹️ Detener</button>
+                <button class="control-btn control-start" data-action="start" aria-label="Iniciar" style="background:#28a745;color:white;border:none;border-radius:8px;cursor:pointer;">▶️</button>
+                <button class="control-btn control-pause" data-action="pause" aria-label="Pausar" style="background:#ffc107;color:#333;border:none;border-radius:8px;cursor:pointer;">⏸️</button>
+                <button class="control-btn control-resume" data-action="resume" aria-label="Reanudar" style="background:#17a2b8;color:white;border:none;border-radius:8px;cursor:pointer;">▶️</button>
+                <button class="control-btn control-stop" data-action="stop" aria-label="Detener" style="background:#dc3545;color:white;border:none;border-radius:8px;cursor:pointer;">⏹️</button>
             `;
             document.body.appendChild(div);
+            
+            // Agregar event listeners
+            div.querySelectorAll('button[data-action]').forEach(btn => {
+                const handler = function(e) {
+                    e.preventDefault();
+                    const action = this.getAttribute('data-action');
+                    if (action === 'start') startReadingCurrent();
+                    else if (action === 'pause') pauseReading();
+                    else if (action === 'resume') resumeReading();
+                    else if (action === 'stop') stopReading();
+                };
+                btn.addEventListener('click', handler);
+                btn.addEventListener('touchend', handler);
+            });
         }
 
         function updateFloatingDeviceControls() {
-            // Controles flotantes desactivados
-            return;
+            createFloatingDeviceControls();
+            const preferred = (() => { try { return localStorage.getItem('preferredDevice'); } catch(e) { return null; } })();
+            const floating = document.getElementById('deviceControlsFloating');
+            if (!floating) return;
+            
+            const activeScreen = document.querySelector('.screen.active')?.id || '';
+            const showOnScreens = ['theorySection','visualGuide','auditivaGuide'];
+            const isMobileSize = window.innerWidth < 768;
+            const shouldShow = (preferred === 'mobile' || isMobileSize) && showOnScreens.includes(activeScreen);
+            
+            if (shouldShow) {
+                floating.style.display = 'flex';
+                floating.setAttribute('aria-hidden','false');
+            } else {
+                floating.style.display = 'none';
+                floating.setAttribute('aria-hidden','true');
+            }
         }
 
         // positionFloatingNear ya no se usa; los controles flotantes son fijos en centro-derecha
