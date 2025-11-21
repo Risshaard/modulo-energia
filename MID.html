@@ -2024,9 +2024,21 @@ Por favor, realiza una evaluación formativa completa, estructurada en los sigui
             
             const utter = new SpeechSynthesisUtterance(sentence);
             Speech.utter = utter;
+            
+            // Seleccionar una voz española más clara
+            const voices = window.speechSynthesis.getVoices();
+            const spanishVoice = voices.find(voice => 
+                voice.lang.startsWith('es') && 
+                (voice.name.includes('Google') || voice.name.includes('Microsoft'))
+            ) || voices.find(voice => voice.lang.startsWith('es'));
+            
+            if (spanishVoice) {
+                utter.voice = spanishVoice;
+            }
+            
             utter.lang = 'es-ES';
-            utter.rate = 0.95;
-            utter.pitch = 1;
+            utter.rate = 0.90;
+            utter.pitch = 1.0;
             utter.volume = 1;
             
             utter.onend = () => {
@@ -2331,6 +2343,13 @@ Por favor, realiza una evaluación formativa completa, estructurada en los sigui
             updateFloatingDeviceControls();
         });
         document.addEventListener('DOMContentLoaded', () => {
+            // Cargar voces disponibles
+            if ('speechSynthesis' in window) {
+                speechSynthesis.getVoices();
+                if (speechSynthesis.onvoiceschanged !== undefined) {
+                    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+                }
+            }
             ensureMobileControls();
             updateFloatingDeviceControls();
         });
