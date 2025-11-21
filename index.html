@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Didáctico - La Energía</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Century Gothic', Arial, sans-serif;
+            background: linear-gradient(135deg, #FFEFDB 0%, #FFE6A7 30%, #FFD08A 60%, #FFB347 100%);
+            background-size: 400% 400%;
+            animation: rainbowGradient 15s ease infinite;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        @keyframes rainbowGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff9500 0%, #ffd42a 50%, #ff9500 100%);
+            background-size: 200% 200%;
+            animation: headerGradient 8s ease infinite;
+            color: #2b2b2b;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        @keyframes headerGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .screen {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.5s;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* MENÚ PRINCIPAL */
+        .main-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+            padding: 60px 40px;
+        }
+
+        .menu-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fff8f0 100%);
+            border: 3px solid #ffa94d;
+            border-radius: 25px;
+            padding: 45px 35px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(40, 167, 69, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .menu-card:hover::before {
+            opacity: 1;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            border-color: #28a745;
+        }
+
+        .menu-card .icon {
+            font-size: 90px;
+            margin-bottom: 25px;
+            display: block;
+            animation: iconFloat 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .menu-card h3 {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+            font-weight: bold;
+        }
+
+        .menu-card p {
+            font-size: 1.15em;
+            color: #555;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* SECCIÓN TEÓRICA */
+        .theory-nav {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .theory-nav h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .indicator-btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            margin: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.15);
+        }
+
+        .indicator-btn:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .indicator-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transform: scale(1.05);
+        }
+
+        .indicator-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .indicator-content.active {
+            display: block;
+        }
+
+        .indicator-content h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .indicator-content h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .indicator-content p, .indicator-content li {
+            line-height: 1.8;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .indicator-content ul {
+            margin-left: 30px;
+            margin-top: 15px;
+        }
+
+        .energy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .energy-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .energy-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        /* FORMULARIO ESTUDIANTE */
+        .student-form {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 35px;
+            border-left: 6px solid #667eea;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 17px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 16px 18px;
+            border: 3px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 17px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .device-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .device-card {
+            background: white;
+            border: 4px solid #e9ecef;
+            border-radius: 20px;
+            padding: 35px 25px;
+            width: 220px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .device-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(102, 126, 234, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .device-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .device-card:hover::after {
+            opacity: 1;
+        }
+
+        .device-card.selected {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+            transform: scale(1.05);
+        }
+
+        .device-card.selected::before {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #28a745;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            z-index: 10;
+        }
+
+        .device-card .icon {
+            font-size: 70px;
+            margin-bottom: 18px;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .device-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 8px;
+            color: #333;
+            position: relative;
+            z-index: 1;
+        }
+
+        .device-card p {
+            color: #666;
+            font-size: 0.95em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* SECCIÓN DE GUÍA */
+        .guide-section {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 3px solid #e9ecef;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+
+        .guide-section:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 18px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #f8f9fa;
+        }
+
+        .section-title {
+            font-size: 1.6em;
+            color: #667eea;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .speak-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            font-weight: 600;
+        }
+
+        .speak-btn:hover {
+            background: linear-gradient(135deg, #218838 0%, #1ba378 100%);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .speak-btn:active {
+            transform: scale(0.95);
+        }
+
+        .speak-btn.speaking {
+            background: linear-gradient(135deg, #dc3545 0%, #ff6b6b 100%);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .prompt-box {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            position: relative;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .copy-btn:hover {
+            background: #5568d3;
+        }
+
+        .btn {
+            padding: 18px 45px;
+            border: none;
+            border-radius: 30px;
+            font-size: 19px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-transform: none;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #218838 0%, #1ba378 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.5);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #5a6268 0%, #4e555b 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.5);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            color: #333;
+            font-weight: bold;
+        }
+
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #e0a800 0%, #e68900 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.5);
+        }
+
+        .ai-links {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .ai-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: #17a2b8;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .ai-link:hover {
+            background: #138496;
+            transform: translateY(-2px);
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .checklist input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            border-left: 6px solid #ffc107;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+            border: 2px solid #ffe69c;
+            border-left: 6px solid #ffc107;
+        }
+
+        .highlight-box h4 {
+            color: #856404;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .highlight-box p, .highlight-box li {
+            color: #533f03;
+            line-height: 1.7;
+        }
+
+        /* CONTROLES MÓVILES */
+        .mobile-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .mobile-controls.show {
+            display: flex;
+        }
+
+        .mobile-control-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+
+        .mobile-control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .mobile-control-btn.start { background: #28a745; color: white; }
+        .mobile-control-btn.pause { background: #ffc107; color: #333; }
+        .mobile-control-btn.resume { background: #17a2b8; color: white; }
+        .mobile-control-btn.stop { background: #dc3545; color: white; }
+
+        /* Controles específicos que aparecen al seleccionar dispositivo móvil */
+        .device-controls {
+            position: absolute;
+            right: 30px;
+            top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1200;
+        }
+
+        /* Controles flotantes fijos: centro-derecha, siempre visibles mientras estén activos */
+        .device-controls-floating {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1400;
+        }
+
+        .device-controls .control-btn {
+            min-width: 120px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .device-controls .control-start { background: #28a745; color: white; }
+        .device-controls .control-pause { background: #ffc107; color: #333; }
+        .device-controls .control-resume { background: #17a2b8; color: white; }
+        .device-controls .control-stop { background: #dc3545; color: white; }
+
+        /* AYUDA TECLADO */
+        .keyboard-help {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+        .keyboard-help.show {
+            display: block;
+        }
+
+        .keyboard-help h4 {
+            margin: 0 0 10px 0;
+            color: #FFD700;
+        }
+
+        .keyboard-help kbd {
+            background: #667eea;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: #28a745;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
+        }
+
+        .btn-container {
+            text-align: center;
+            margin: 30px 0;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media print {
+            .btn, .speak-btn, .mobile-controls, .keyboard-help {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .main-menu {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* MEJOR SOPORTE TÁCTIL PARA MÓVILES */
+        * {
+            -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
+            -webkit-touch-callout: none;
+        }
+
+        button, .menu-card, .device-card, .indicator-btn {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* Fondo temático para pantallas de configuración (energía) - paleta amarillo/naranja/blanco con toques verdes */
+        #visualSetup, #auditivaSetup {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fffaf0 0%, #fff0c2 40%, #ffd19a 100%);
+            border-top: 6px solid #ffb84d;
+        }
+
+        /* Capa de formas sutiles que sugiere energía (burbujas y rayos) */
+        #visualSetup::before, #auditivaSetup::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle at 12% 18%, rgba(255,255,255,0.40) 0%, rgba(255,255,255,0.00) 16%),
+                radial-gradient(circle at 82% 78%, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.00) 20%),
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.00) 34%),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.00) 40%, rgba(255,255,255,0.02) 100%);
+            background-blend-mode: overlay;
+            opacity: 0.98;
+            transform: translateZ(0);
+            animation: energyDrift 18s linear infinite;
+        }
+
+        @keyframes energyDrift {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-12px) scale(1.02); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        /* Asegurar legibilidad del formulario dentro de estas pantallas */
+        #visualSetup .student-form, #auditivaSetup .student-form {
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(4px);
+            border-left: 6px solid #28a745; /* toque verde */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Módulo Didáctico: La Energía</h1>
+            <p>Educación Inclusiva - Octavo Año</p>
+        </div>
+
+        <!-- MENÚ PRINCIPAL -->
+        <div id="mainMenu" class="screen active">
+            <div class="main-menu">
+                <div class="menu-card" data-action="showTheory">
+                    <div class="icon">📖</div>
+                    <h3>Sección Teórica</h3>
+                    <p>Contenido educativo sobre las formas de energía, transformaciones y energías limpias</p>
+                </div>
+
+                <div class="menu-card" data-action="showVisual">
+                    <div class="icon">👁️</div>
+                    <h3>Discapacidad Visual</h3>
+                    <p>Módulo adaptado con soporte de audio y descripciones detalladas</p>
+                </div>
+
+                <div class="menu-card" data-action="showAuditiva">
+                    <div class="icon">👂</div>
+                    <h3>Discapacidad Auditiva</h3>
+                    <p>Módulo adaptado con contenido visual, infografías y videos subtitulados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN TEÓRICA -->
+        <div id="theorySection" class="screen">
+            <div class="theory-nav">
+                <h3>Selecciona un Indicador de Aprendizaje:</h3>
+                <button class="indicator-btn active" data-indicator="1">📌 Indicador 1: Formas y Transformaciones</button>
+                <button class="indicator-btn" data-indicator="2">📌 Indicador 2: Avances Científicos</button>
+                <button class="indicator-btn" data-indicator="3">📌 Indicador 3: Energías Limpias</button>
+            </div>
+
+            <!-- CONTROLES DE LECTURA PARA TEORÍA (teclado y pantalla) -->
+            <div class="guide-section" style="margin: 15px 0;">
+                <div class="section-header">
+                    <div class="section-title">🔊 Controles de Lectura - Teoría</div>
+                    <div style="display:flex;gap:10px;align-items:center;">
+                        <button class="speak-btn" data-action="start" id="theoryStart" aria-label="Botón iniciar lectura">▶️ Iniciar (A)</button>
+                        <button class="speak-btn" data-action="pause" id="theoryPause" aria-label="Botón pausar lectura">⏸️ Pausar (S)</button>
+                        <button class="speak-btn" data-action="resume" id="theoryResume" aria-label="Botón reanudar lectura">▶️ Reanudar (W)</button>
+                        <button class="speak-btn" data-action="stop" id="theoryStop" aria-label="Botón detener lectura">⏹️ Detener (D)</button>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <p style="color:#555;">Atajos de teclado: A = Iniciar, S = Pausar, W = Reanudar, D = Detener. Estos atajos funcionan cuando no estás escribiendo en un campo de texto.</p>
+                </div>
+            </div>
+
+            <!-- INDICADOR 1 -->
+            <div id="indicator1" class="indicator-content active">
+                <h2>🔋 Indicador 1: Identificar las formas y transformaciones de la energía</h2>
+                
+                <h3>¿Qué es la Energía?</h3>
+                <p>La energía es la capacidad para realizar un trabajo. Hace posible que toda materia logre moverse o experimentar un cambio. En la vida cotidiana, la energía ha tomado gran importancia para las actividades humanas. Se mide en Julios (J) y Kilojulios (KJ).</p>
+
+                <div class="highlight-box">
+                    <h4>⚖️ Ley de Conservación de la Energía</h4>
+                    <p><strong>"La energía no puede crearse ni destruirse, solo se transforma."</strong></p>
+                </div>
+
+                <h3>Tipos Principales de Energía</h3>
+                <div class="energy-grid">
+                    <div class="energy-card">
+                        <h4>⚡ Energía Potencial</h4>
+                        <p>Energía almacenada en los cuerpos en reposo. Depende de su masa, fuerza de gravedad y altura.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🏃 Energía Cinética</h4>
+                        <p>Energía de un cuerpo en movimiento. Todos los cuerpos en movimiento poseen energía cinética. Depende de la masa y velocidad.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>💡 Energía Eléctrica</h4>
+                        <p>Se manifiesta en un movimiento de cargas eléctricas entre dos puntos determinados.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🧪 Energía Química</h4>
+                        <p>Se manifiesta en una reacción química, formada por el rompimiento o formación de enlaces químicos.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🔥 Energía Calórica</h4>
+                        <p>Se manifiesta por la combustión de la materia. Producto del aumento de temperatura.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🌋 Energía Geotérmica</h4>
+                        <p>Se manifiesta en un flujo de calor, producido a partir de procesos internos de la tierra.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🧲 Energía Magnética</h4>
+                        <p>Es producida por la atracción ejercida por la propiedad de los imanes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INDICADOR 2 -->
+            <div id="indicator2" class="indicator-content">
+                <h2>🔬 Indicador 2: Avances científicos y tecnológicos</h2>
+                <p><strong>Explicar los avances científicos y tecnológicos relacionados con la aplicación de diversas formas de energía para el uso doméstico, industrial y la salud.</strong></p>
+
+                <h3>Aplicaciones de la Energía</h3>
+                <p>La energía ha sido un gran avance para la vida humana, abarcando el campo de la industria, medicina, el doméstico y otros, facilitando la vida del ser humano.</p>
+
+                <div class="energy-grid">
+                    <div class="energy-card">
+                        <h4>🏠 Uso Doméstico</h4>
+                        <p><strong>Energía Eléctrica:</strong> Permite el funcionamiento de aparatos electrónicos como celulares, computadoras facilitando la comunicación.</p>
+                        <p><strong>Energía Calórica:</strong> Aplicación en calefacción y producción de alimentos.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🏭 Uso Industrial</h4>
+                        <p><strong>Energía Química:</strong> Esencial en automóviles, aviones y barcos. Producto de la combustión de leña, carbón o petróleo.</p>
+                        <p><strong>Energía Calórica:</strong> Secado y lavado de producciones industriales.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🏥 Uso en Salud</h4>
+                        <p><strong>Energía Magnética:</strong> Resonancia magnética (RM) para imágenes del cuerpo sin procedimientos invasivos.</p>
+                        <p><strong>Energía Eléctrica:</strong> Fabricación de medicamentos, radioterapia, esterilización de material quirúrgico.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🌍 Energía Geotérmica</h4>
+                        <p>Fuente de energía limpia y sostenible, aprovecha el calor interno de la Tierra para generar electricidad y calefacción. Contribuye al desarrollo de tecnologías respetuosas con el ambiente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INDICADOR 3 -->
+            <div id="indicator3" class="indicator-content">
+                <h2>🌱 Indicador 3: Energías limpias o amigables con el ambiente</h2>
+                <p><strong>Valorar el uso de energías limpias o amigables con el ambiente que contribuyan con el desarrollo de las actividades económicas del país y el cuidado del planeta.</strong></p>
+
+                <h3>¿Qué son las Energías Limpias?</h3>
+                <p>Se consideran energías limpias a las nuevas formas de transformación de energías que tienen como objetivo cuidar el ambiente, reconociendo el impacto medioambiental de la obtención de energías.</p>
+
+                <div class="energy-grid">
+                    <div class="energy-card" style="border-left-color: #28a745;">
+                        <h4>✅ Energías Renovables</h4>
+                        <ul>
+                            <li>Se obtienen de fuentes naturales que se regeneran</li>
+                            <li>Reservas ilimitadas e inagotables</li>
+                            <li>Energía sostenible a largo plazo</li>
+                            <li><strong>Ejemplos:</strong> Solar, eólica, hidroeléctrica, geotérmica, biomasa</li>
+                        </ul>
+                    </div>
+                    <div class="energy-card" style="border-left-color: #dc3545;">
+                        <h4>❌ Energías No Renovables</h4>
+                        <ul>
+                            <li>Fuentes que no se regeneran y se pueden agotar</li>
+                            <li>Reservas reducidas y limitadas</li>
+                            <li>No es sostenible a largo plazo</li>
+                            <li><strong>Ejemplos:</strong> Petróleo, carbón, gas natural, energía nuclear</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>🇨🇷 Principales Energías Limpias de Costa Rica</h3>
+                <div class="energy-grid">
+                    <div class="energy-card">
+                        <h4>💧 Energía Hidroeléctrica</h4>
+                        <p>Obtenida por medio del agua, producida por una represa hidroeléctrica.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>💨 Energía Eólica</h4>
+                        <p>Proviene del movimiento del viento, obtenida por medio de un aerogenerador.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>☀️ Energía Solar</h4>
+                        <p>Se obtiene de la luz solar en forma de radiación electromagnética.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🌋 Energía Geotérmica</h4>
+                        <p>Aprovecha el calor interno de la tierra por medio de gases a altas temperaturas.</p>
+                    </div>
+                    <div class="energy-card">
+                        <h4>🌿 Biomasa</h4>
+                        <p>Energía obtenida a partir de materia orgánica.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" data-screen="mainMenu">⬅️ Volver al Menú</button>
+            </div>
+        </div>
+
+        <!-- CONFIGURACIÓN DISCAPACIDAD VISUAL -->
+        <div id="visualSetup" class="screen">
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">👁️ Configuración - Discapacidad Visual</h2>
+            
+            <div class="student-form">
+                <div class="highlight-box">
+                    <h4>📝 Nota para el Docente</h4>
+                    <p>Por favor, ayude al estudiante a completar los siguientes datos. Es importante que todos los campos sean llenados antes de continuar.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="visualName">Nombre completo del estudiante: *</label>
+                    <input type="text" id="visualName" placeholder="Ejemplo: María González" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="visualSection">Sección: *</label>
+                    <input type="text" id="visualSection" placeholder="Ejemplo: 8-1" required>
+                </div>
+
+                <h3 style="margin-top: 30px; text-align: center;">📱 Selecciona el dispositivo que vas a usar:</h3>
+                <div class="device-options" id="visualDeviceOptions">
+                    <div class="device-card" data-device="computer" data-type="visual">
+                        <div class="icon">💻</div>
+                        <h4>Computadora</h4>
+                        <p>Atajos de teclado</p>
+                    </div>
+                    <div class="device-card" data-device="mobile" data-type="visual">
+                        <div class="icon">📱</div>
+                        <h4>Celular/Tablet</h4>
+                        <p>Botones táctiles</p>
+                    </div>
+                </div>
+
+                <div class="device-controls" id="visualDeviceControls" style="display:none;" aria-hidden="true">
+                    <button class="control-btn control-start" data-action="start" aria-label="Iniciar lectura">A - Iniciar</button>
+                    <button class="control-btn control-pause" data-action="pause" aria-label="Pausar lectura">S - Pausar</button>
+                    <button class="control-btn control-resume" data-action="resume" aria-label="Reanudar lectura">W - Reanudar</button>
+                    <button class="control-btn control-stop" data-action="stop" aria-label="Detener lectura">D - Detener</button>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn btn-secondary" data-screen="mainMenu">⬅️ Volver</button>
+                    <button class="btn btn-success" data-action="startVisual" id="visualStartBtn" disabled>🚀 Comenzar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONFIGURACIÓN DISCAPACIDAD AUDITIVA -->
+        <div id="auditivaSetup" class="screen">
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">👂 Configuración - Discapacidad Auditiva</h2>
+            
+            <div class="student-form">
+                <div class="form-group">
+                    <label for="auditivaName">Nombre completo del estudiante: *</label>
+                    <input type="text" id="auditivaName" placeholder="Ejemplo: Carlos Ramírez" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="auditivaSection">Sección: *</label>
+                    <input type="text" id="auditivaSection" placeholder="Ejemplo: 8-2" required>
+                </div>
+
+                <h3 style="margin-top: 30px; text-align: center;">📱 Selecciona el dispositivo que vas a usar:</h3>
+                <div class="device-options" id="auditivaDeviceOptions">
+                    <div class="device-card" data-device="computer" data-type="auditiva">
+                        <div class="icon">💻</div>
+                        <h4>Computadora</h4>
+                        <p>Pantalla grande</p>
+                    </div>
+                    <div class="device-card" data-device="mobile" data-type="auditiva">
+                        <div class="icon">📱</div>
+                        <h4>Celular/Tablet</h4>
+                        <p>Táctil</p>
+                    </div>
+                </div>
+
+                <div class="device-controls" id="auditivaDeviceControls" style="display:none;" aria-hidden="true">
+                    <button class="control-btn control-start" data-action="start" aria-label="Iniciar lectura">A - Iniciar</button>
+                    <button class="control-btn control-pause" data-action="pause" aria-label="Pausar lectura">S - Pausar</button>
+                    <button class="control-btn control-resume" data-action="resume" aria-label="Reanudar lectura">W - Reanudar</button>
+                    <button class="control-btn control-stop" data-action="stop" aria-label="Detener lectura">D - Detener</button>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn btn-secondary" data-screen="mainMenu">⬅️ Volver</button>
+                    <button class="btn btn-success" data-action="startAuditiva" id="auditivaStartBtn" disabled>🚀 Comenzar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GUÍA DISCAPACIDAD VISUAL -->
+        <div id="visualGuide" class="screen">
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">👁️ Módulo para Discapacidad Visual</h2>
+            <p style="text-align: center; margin-bottom: 30px;"><strong>Estudiante:</strong> <span id="visualStudentName"></span> | <strong>Sección:</strong> <span id="visualStudentSection"></span></p>
+
+            <!-- SECCIÓN 1: PREPARACIÓN -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">1️⃣ Preparación Inicial</div>
+                    <button class="speak-btn" data-action="speak">🔊 Leer</button>
+                </div>
+                <div class="section-content">
+                    <h3>Configuración del Entorno.</h3>
+                    <ul>
+                        <li>El profesor te ayudará a iniciar ChatGPT.</li>
+                        <li>Asegúrate de que la función de voz o el lector de pantalla esté activado.</li>
+                        <li>Confirma que el audio se escuche con claridad.</li>
+                    </ul>
+                    <h3>Materiales Necesarios,</h3>
+                    <ul>
+                        <li>Documento que contenga la información.</li>
+                        <li>Dispositivo con audio en funcionamiento.</li>
+                        <li>Grabadora para tomar notas (opcional).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: INDICADOR 1 - FORMAS DE ENERGÍA -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">2️⃣ Indicador 1: Formas y Transformaciones de Energía</div>
+                    <button class="speak-btn" data-action="speak">🔊 Leer</button>
+                </div>
+                <div class="section-content">
+                    <h3>Prompt para la IA:</h3>
+                    <p><strong>Copia y pega este texto en ChatGPT:</strong></p>
+                    <div class="prompt-box" id="promptVisual1">
+<button class="copy-btn" data-copy="promptVisual1">Copiar</button>Hola ChatGPT, soy <span class="student-name-placeholder">[Nombre]</span> un estudiante con discapacidad visual. Necesito que me ayudes a estudiar el tema "La energía" del módulo de octavo año de Ciencias Naturales. Por favor, respóndeme en formato de voz (modo hablante) y utiliza un tono amable, claro y con pausas para que pueda seguirte fácilmente.
+
+Ayúdame de la siguiente manera:
+
+1. Lectura guiada y explicaciones
+- Lee y explícame con tus palabras el contenido sobre La energía.
+- Explica qué significa energía y cómo se mide (Julios y Kilojulios).
+- Describe las formas de energía: potencial, cinética, eléctrica, química, calórica, geotérmica y magnética.
+- Explica también la Ley de conservación de la energía con un ejemplo de la vida cotidiana.
+- Termina esta parte con un resumen sencillo para reforzar lo aprendido.
+- Dame comparaciones y ejemplos cotidianos para entender mejor cada tipo de energía. Por ejemplo: "La energía potencial es como…" o "La energía cinética se parece a…". Usa ejemplos que pueda imaginar auditivamente: sonidos, acciones o situaciones diarias.
+
+2. Preguntas para repasar
+Hazme preguntas orales para comprobar si entendí. Incluye:
+- Preguntas de respuesta corta
+- Preguntas para completar frases
+- Una o dos preguntas de razonamiento
+Espera mis respuestas antes de continuar y corrígeme si me equivoco, con una breve explicación hablada.
+
+Recuerda hablarme en voz, despacio y con lenguaje claro. El objetivo es ayudarme a comprender las formas y transformaciones de la energía en la vida diaria.</div>
+
+                    <div class="ai-links">
+                        <a href="https://chat.openai.com/" target="_blank" class="ai-link">
+                            🤖 Abrir ChatGPT
+                        </a>
+                        <a href="https://claude.ai/" target="_blank" class="ai-link">
+                            🤖 Abrir Claude
+                        </a>
+                    </div>
+
+                    <div class="guide-section">
+                        <div class="section-header">
+                            <div class="section-title">📝 Anotaciones - Indicador 1 (Visual)</div>
+                        </div>
+                        <div class="section-content">
+                            <textarea id="notesPromptVisual1" placeholder="Anotaciones de la práctica con la IA..."></textarea>
+                        </div>
+                    </div>
+
+                    <h3>Lista de Verificación - Indicador 1</h3>
+                    <ul class="checklist">
+                        <li><input type="checkbox"> Comprendí qué es la energía</li>
+                        <li><input type="checkbox"> Distingo la energía potencial y energía cinética</li>
+                        <li><input type="checkbox"> Puedo detallar los diferentes tipos de energías</li>
+                        <li><input type="checkbox"> Identifico las unidades del Sistema Internacional para medir la energía</li>
+                        <li><input type="checkbox"> Resolví todas mis dudas</li>
+                        <li><input type="checkbox"> Completé la evaluación</li>
+                        <li><input type="checkbox"> Obtuve el resumen final</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: INDICADOR 2 - AVANCES CIENTÍFICOS -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">3️⃣ Indicador 2: Avances Científicos y Tecnológicos</div>
+                    <button class="speak-btn" data-action="speak">🔊 Leer</button>
+                </div>
+                <div class="section-content">
+                    <h3>Prompt para la IA</h3>
+                    <p><strong>Copia y pega este texto en ChatGPT:</strong></p>
+                    <div class="prompt-box" id="promptVisual2">
+<button class="copy-btn" data-copy="promptVisual2">Copiar</button>Hola ChatGPT, soy <span class="student-name-placeholder">[Nombre]</span>, un estudiante con discapacidad visual. Necesito que me ayudes a estudiar el tema "Avances científicos y tecnológicos relacionados con la energía" del módulo de octavo año de Ciencias Naturales.
+
+Por favor, respóndeme en formato de voz (modo hablante), usando un tono amable, claro y con pausas, para que pueda comprenderte fácilmente.
+
+Ayúdame de la siguiente manera:
+
+1. Lectura guiada y explicaciones
+- Explica cómo la energía ha sido un avance para la vida humana en la industria, medicina y uso doméstico
+- Describe los avances científicos y tecnológicos en:
+  * Uso doméstico (energía eléctrica, calórica)
+  * Uso industrial (energía química, calórica)
+  * Uso en salud (energía magnética en resonancia magnética, radioterapia)
+  * Energía geotérmica como fuente limpia
+- Usa ejemplos que pueda imaginar con sonidos, acciones o situaciones de la vida diaria
+
+2. Ejemplos auditivos o cotidianos
+Da ejemplos que yo pueda imaginar con sonidos o acciones, como encender una lámpara, el sonido de un hospital, una fábrica funcionando.
+
+3. Resumen final
+Al terminar, hazme un resumen sencillo y corto para reforzar lo aprendido.</div>
+
+                    <div class="ai-links">
+                        <a href="https://chat.openai.com/" target="_blank" class="ai-link">
+                            🤖 Abrir ChatGPT
+                        </a>
+                        <a href="https://claude.ai/" target="_blank" class="ai-link">
+                            🤖 Abrir Claude
+                        </a>
+                    </div>
+
+                    <div class="guide-section">
+                        <div class="section-header">
+                            <div class="section-title">📝 Anotaciones - Indicador 2 (Visual)</div>
+                        </div>
+                        <div class="section-content">
+                            <textarea id="notesPromptVisual2" placeholder="Anotaciones de la práctica con la IA..."></textarea>
+                        </div>
+                    </div>
+
+                    <h3>Lista de Verificación - Indicador 2</h3>
+                    <ul class="checklist">
+                        <li><input type="checkbox"> Comprendí las principales formas de energía: calórica, química, eléctrica, magnética y geotérmica</li>
+                        <li><input type="checkbox"> Identifiqué ejemplos de cómo cada tipo de energía se aplica en la vida cotidiana y en la industria</li>
+                        <li><input type="checkbox"> Reconocí los avances científicos y tecnológicos que han surgido a partir del uso de diferentes energías</li>
+                        <li><input type="checkbox"> Puedo explicar cómo las diversas formas de energía contribuyen al bienestar y la salud humana</li>
+                        <li><input type="checkbox"> Completé la evaluación y resolví mis dudas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: INDICADOR 3 - ENERGÍAS LIMPIAS -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">4️⃣ Indicador 3: Energías Limpias y Ambiente</div>
+                    <button class="speak-btn" data-action="speak">🔊 Leer</button>
+                </div>
+                <div class="section-content">
+                    <h3>Prompt para la IA</h3>
+                    <p><strong>Copia y pega este texto en ChatGPT:</strong></p>
+                    <div class="prompt-box" id="promptVisual3">
+<button class="copy-btn" data-copy="promptVisual3">Copiar</button>Hola ChatGPT, soy <span class="student-name-placeholder">[Nombre]</span>, un estudiante con discapacidad visual. Necesito que me ayudes a estudiar el tema "Las energías limpias y su importancia para el ambiente" del módulo de octavo año de Ciencias Naturales.
+
+Por favor, respóndeme en formato de voz (modo hablante), usando un tono amable, claro y con pausas, para que pueda comprenderte fácilmente.
+
+Ayúdame de la siguiente manera:
+
+1. Lectura guiada y explicaciones
+- Léeme y explícame con tus palabras qué son las energías limpias o amigables con el ambiente
+- Explica la diferencia entre energías renovables y no renovables
+- Describe las principales formas de energías renovables: solar, eólica, hidroeléctrica, geotérmica y biomasa, usando ejemplos que pueda imaginar con sonidos, acciones o situaciones de la vida diaria
+- Explica las energías no renovables como petróleo, carbón, gas natural y energía nuclear, diciendo por qué no son sostenibles y qué problemas causan al ambiente
+- Menciona las principales energías limpias de Costa Rica
+
+2. Ejemplos auditivos o cotidianos
+Da ejemplos que yo pueda imaginar con sonidos o acciones, como: "La energía solar la usamos cuando…", "La energía eólica funciona cuando el viento…"
+
+3. Resumen final
+Al terminar, hazme un resumen sencillo y corto para reforzar lo aprendido.</div>
+
+                    <div class="ai-links">
+                        <a href="https://chat.openai.com/" target="_blank" class="ai-link">
+                            🤖 Abrir ChatGPT
+                        </a>
+                        <a href="https://claude.ai/" target="_blank" class="ai-link">
+                            🤖 Abrir Claude
+                        </a>
+                    </div>
+
+                    <div class="guide-section">
+                        <div class="section-header">
+                            <div class="section-title">📝 Anotaciones - Indicador 3 (Visual)</div>
+                        </div>
+                        <div class="section-content">
+                            <textarea id="notesPromptVisual3" placeholder="Anotaciones de la práctica con la IA..."></textarea>
+                        </div>
+                    </div>
+
+                    <h3>Lista de Verificación - Indicador 3</h3>
+                    <ul class="checklist">
+                        <li><input type="checkbox"> Comprendí el concepto de energías limpias</li>
+                        <li><input type="checkbox"> Identifiqué las energías renovables y no renovables</li>
+                        <li><input type="checkbox"> Reconocí las principales energías limpias de Costa Rica</li>
+                        <li><input type="checkbox"> Puedo debatir las diferencias y similitudes de las energías renovables y no renovables</li>
+                        <li><input type="checkbox"> Completé la evaluación y resolví mis dudas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 5: REFLEXIÓN -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">5️⃣ Mis Notas y Reflexión</div>
+                    <button class="speak-btn" data-action="speak">🔊 Leer</button>
+                </div>
+                <div class="section-content">
+                    <div class="highlight-box">
+                        <h4>💭 Preguntas para tu reflexión:</h4>
+                        <ul>
+                            <li>¿Qué fue lo que más te llamó la atención sobre el tema de la energía?</li>
+                            <li>¿Qué parte te resultó más fácil o más difícil de entender?</li>
+                            <li>¿Qué ejemplos te ayudaron más a comprender las diferencias entre las formas de energía?</li>
+                        </ul>
+                    </div>
+                    <textarea id="visualNotes" placeholder="Escribe aquí tus notas y reflexiones..."></textarea>
+                </div>
+            </div>
+
+            <!-- EVALUACIÓN DOCENTE -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">👨‍🏫 Evaluación para el Docente</div>
+                    <button class="speak-btn" data-action="speak">🔊 Leer</button>
+                </div>
+                <div class="section-content">
+                    <div class="highlight-box">
+                        <h4>📋 Prompt para Evaluación del Docente</h4>
+                        <p>Copie y pegue este prompt en ChatGPT para evaluar el desempeño del estudiante:</p>
+                    </div>
+                    <div class="prompt-box" id="promptVisualEval">
+<button class="copy-btn" data-copy="promptVisualEval">Copiar</button>Hola ChatGPT, soy docente de octavo año y necesito que me ayudes a evaluar la interacción del estudiante con discapacidad visual que utilizó tu asistencia para estudiar el tema "formas y transformaciones de la energía".
+
+Por favor, realiza una evaluación formativa completa, estructurada en los siguientes apartados:
+
+1. Resumen general de la interacción
+- Realiza un resumen completo del diálogo o actividad que el estudiante mantuvo contigo
+- Describe brevemente cómo se desarrolló la sesión: introducción, explicaciones, ejemplos, participación, preguntas y reflexiones
+- Señala si el estudiante logró mantener una comunicación activa, clara y coherente
+- Evalúa el nivel de comprensión y participación del estudiante usando una escala (incluye tu rúbrica si tienes una)
+- Incluye una breve justificación de la calificación
+
+2. Reflexión sobre el tema
+- Analiza si el estudiante logró reflexionar sobre el tema de la energía, su importancia y aplicación en la vida cotidiana
+
+3. Expresión y actitud
+- Evalúa cómo se expresó el estudiante: uso de lenguaje, claridad verbal, capacidad para argumentar
+- Considera su actitud hacia el aprendizaje, su disposición para participar y su aprovechamiento del apoyo de la IA
+
+4. Recomendaciones para el docente
+Ofrece sugerencias personalizadas que ayuden al docente a fortalecer el aprendizaje del estudiante:
+- Estrategias para reforzar contenidos de energía
+- Actividades adicionales (auditivas o experimentales)
+- Recomendaciones para mejorar la comprensión o la interacción en futuras sesiones con IA</div>
+
+                    <div class="ai-links">
+                        <a href="https://chat.openai.com/" target="_blank" class="ai-link">
+                            🤖 Abrir ChatGPT para Evaluación
+                        </a>
+                    </div>
+
+                    <h3>Observaciones del Docente:</h3>
+                    <textarea id="visualTeacherNotes" placeholder="El docente puede escribir aquí sus observaciones..."></textarea>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-warning" data-action="print">🖨️ Imprimir Guía</button>
+                <button class="btn btn-secondary" data-screen="mainMenu">⬅️ Volver al Menú</button>
+            </div>
+        </div>
+
+        <!-- GUÍA DISCAPACIDAD AUDITIVA -->
+        <div id="auditivaGuide" class="screen">
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 30px;">👂 Módulo para Discapacidad Auditiva</h2>
+            <p style="text-align: center; margin-bottom: 30px;"><strong>Estudiante:</strong> <span id="auditivaStudentName"></span> | <strong>Sección:</strong> <span id="auditivaStudentSection"></span></p>
+
+            <!-- SECCIÓN 1: PREPARACIÓN -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">1️⃣ Preparación Inicial</div>
+                </div>
+                <div class="section-content">
+                    <h3>Configuración del Entorno.</h3>
+                    <ul>
+                        <li>El docente te brindará ayuda para iniciar ChatGPT.</li>
+                        <li>Asegúrese de que la pantalla esté lista para leer todo el contenido.</li>
+                        <li>Confirma que los textos, subtítulos o mensajes de ChatGPT se vean con claridad.</li>
+                    </ul>
+                    <h3>Materiales Necesarios.</h3>
+                    <ul>
+                        <li>Documento que contenga la información.</li>
+                        <li>Dispositivo móvil (Computadora, Celular, Tablet).</li>
+                        <li>Ten un cuaderno o archivo digital para tomar apuntes (opcional).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: INDICADOR 1 - FORMAS DE ENERGÍA -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">2️⃣ Indicador 1: Formas y Transformaciones de Energía</div>
+                </div>
+                <div class="section-content">
+                    <h3>Prompt para la IA</h3>
+                    <p><strong>Copia y pega este texto en ChatGPT:</strong></p>
+                    <div class="prompt-box" id="promptAuditiva1">
+<button class="copy-btn" data-copy="promptAuditiva1">Copiar</button>Hola ChatGPT, soy <span class="student-name-placeholder-aud">[Nombre]</span> un estudiante con discapacidad auditiva. Necesito que me ayudes a estudiar el tema "La energía" del módulo de octavo año de Ciencias Naturales. Para ello requiero material audiovisual que me permita una buena comprensión del tema, y poder identificar las formas y transformaciones de la energía en diferentes actividades, que se realizan en la vida diaria.
+
+1. Recolección de información:
+Brinda información sobre el tema considerando los siguientes puntos:
+- Definición general de energía, tipos, sus transformaciones
+- Ejemplos de la cotidianidad de las formas de energía
+- Videos con subtítulos: Proporciona enlaces a videos educativos que expliquen el tema, asegurándote de que cuenten con subtítulos claros y legibles
+- Lengua de Señas: Si es posible, incluye videos en Lengua de Señas que expliquen el tema de manera detallada
+- Resumen escrito: Elabora un resumen escrito que explique las formas y transformaciones de la energía, utilizando un lenguaje claro y sencillo
+- Brinda fuentes confiables
+
+2. Infografía
+Genera una infografía visual que incluya:
+- Tipos de energía con iconos
+- Ejemplos cotidianos
+- Transformaciones de energía
+- Usa colores distintivos para cada tipo</div>
+
+                    <div class="ai-links">
+                        <a href="https://chat.openai.com/" target="_blank" class="ai-link">
+                            🤖 Abrir ChatGPT
+                        </a>
+                        <a href="https://claude.ai/" target="_blank" class="ai-link">
+                            🤖 Abrir Claude
+                        </a>
+                    </div>
+
+                    <div class="guide-section">
+                        <div class="section-header">
+                            <div class="section-title">📝 Anotaciones - Indicador 1 (Auditiva)</div>
+                        </div>
+                        <div class="section-content">
+                            <textarea id="notesPromptAuditiva1" placeholder="Anotaciones de la práctica con la IA..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h4>🎨 Actividad: Crea tu Infografía sobre un Tipo de Energía</h4>
+                        <ol>
+                            <li><strong>Selecciona un tipo de energía:</strong> solar, eólica, hidráulica, térmica, etc.</li>
+                            <li><strong>Investiga con ChatGPT:</strong> Pide ayuda para resumir datos importantes (definición, usos, ventajas, desventajas, ejemplos)</li>
+                            <li><strong>Genera un esquema:</strong> Organiza la información en: título, secciones principales y subtemas</li>
+                            <li><strong>Diseña la infografía:</strong> Define colores, tipografía, iconos. Pide sugerencias a ChatGPT</li>
+                        </ol>
+                    </div>
+
+                    <h3>Lista de Verificación - Indicador 1</h3>
+                    <ul class="checklist">
+                        <li><input type="checkbox"> Comprendí qué es la energía</li>
+                        <li><input type="checkbox"> Distingo la energía potencial y energía cinética</li>
+                        <li><input type="checkbox"> Puedo detallar los diferentes tipos de energías</li>
+                        <li><input type="checkbox"> Identifico las unidades del Sistema Internacional para medir la energía</li>
+                        <li><input type="checkbox"> Resolví todas mis dudas</li>
+                        <li><input type="checkbox"> Completé la evaluación</li>
+                        <li><input type="checkbox"> Diseñé una infografía</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: INDICADOR 3 - ENERGÍAS LIMPIAS -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">3️⃣ Indicador 3: Energías Limpias</div>
+                </div>
+                <div class="section-content">
+                    <h3>Prompt para la IA</h3>
+                    <p><strong>Copia y pega este texto en ChatGPT:</strong></p>
+                    <div class="prompt-box" id="promptAuditiva2">
+<button class="copy-btn" data-copy="promptAuditiva2">Copiar</button>Hola ChatGPT, soy <span class="student-name-placeholder-aud">[Nombre]</span> un estudiante con discapacidad auditiva. Necesito que me ayudes a estudiar el tema "Energías limpias" del módulo de octavo año de Ciencias Naturales.
+
+1. Recolección de información:
+- Definición general de energías limpias o amigables con el ambiente, explicando su importancia para el desarrollo sostenible y el cuidado del planeta
+- Analizar cómo contribuyen las energías limpias al desarrollo de las actividades económicas del país (agricultura, industria, transporte, turismo)
+- Videos con subtítulos: Proporciona enlaces a videos educativos sobre energías renovables
+- Lengua de Señas: Si es posible, incluye videos en Lengua de Señas
+- Resumen escrito: Elabora un resumen claro sobre energías renovables vs no renovables
+
+2. Autoevaluación
+Genera una evaluación al nivel de octavo año que incluya:
+- 12 preguntas de selección única aproximadamente
+- Correspondencia (pareo)
+- Cinco preguntas de respuesta corta
+- Dos preguntas de respuesta construida</div>
+
+                    <div class="ai-links">
+                        <a href="https://chat.openai.com/" target="_blank" class="ai-link">
+                            🤖 Abrir ChatGPT
+                        </a>
+                        <a href="https://claude.ai/" target="_blank" class="ai-link">
+                            🤖 Abrir Claude
+                        </a>
+                    </div>
+
+                    <div class="guide-section">
+                        <div class="section-header">
+                            <div class="section-title">📝 Anotaciones - Indicador 3 (Auditiva)</div>
+                        </div>
+                        <div class="section-content">
+                            <textarea id="notesPromptAuditiva2" placeholder="Anotaciones de la práctica con la IA..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h4>🏙️ Proyecto: Ciudad con Energías Limpias</h4>
+                        <p><strong>Crea una infografía sobre una ciudad costarricense que funcione solo con energías limpias</strong></p>
+                        <ol>
+                            <li><strong>Imagina tu ciudad:</strong> Incluye paneles solares, turbinas eólicas, transporte eléctrico, zonas verdes, ríos limpios</li>
+                            <li><strong>Investiga con ChatGPT:</strong>
+                                <ul>
+                                    <li>¿Qué tipos de energía limpia se usan en Costa Rica?</li>
+                                    <li>¿Cómo benefician al ambiente y la economía?</li>
+                                    <li>¿Qué tecnologías limpias existen?</li>
+                                </ul>
+                            </li>
+                            <li><strong>Genera un esquema:</strong> Secciones como energía limpia, transporte sostenible, economía verde, naturaleza</li>
+                            <li><strong>Diseña tu infografía:</strong> Usa colores, iconos e imágenes representativas</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: REFLEXIÓN -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">4️⃣ Mis Notas y Reflexión</div>
+                </div>
+                <div class="section-content">
+                    <textarea id="auditivaNotes" placeholder="Escribe aquí tus notas, observaciones y reflexiones..."></textarea>
+                </div>
+            </div>
+
+            <!-- EVALUACIÓN DOCENTE -->
+            <div class="guide-section">
+                <div class="section-header">
+                    <div class="section-title">👨‍🏫 Evaluación para el Docente</div>
+                </div>
+                <div class="section-content">
+                    <div class="highlight-box">
+                        <h4>📋 Prompt para Evaluación del Docente</h4>
+                        <p>Copie y pegue este prompt en ChatGPT para evaluar el desempeño del estudiante:</p>
+                    </div>
+                    <div class="prompt-box" id="promptAuditivaEval">
+<button class="copy-btn" data-copy="promptAuditivaEval">Copiar</button>Hola ChatGPT, soy docente de octavo año y necesito que me ayudes a evaluar la interacción del estudiante con discapacidad auditiva que utilizó tu asistencia para estudiar el tema "formas y transformaciones de la energía".
+
+Por favor, realiza una evaluación formativa completa, estructurada en los siguientes apartados:
+
+1. Resumen general de la interacción
+- Realiza un resumen completo del diálogo o actividad que el estudiante mantuvo contigo
+- Describe brevemente cómo se desarrolló la sesión
+- Señala si el estudiante logró mantener una comunicación activa, clara y coherente
+- Evalúa el nivel de comprensión y participación usando una escala
+- Incluye una breve justificación de la calificación
+
+2. Reflexión sobre el tema
+- Analiza si el estudiante logró reflexionar sobre el tema de la energía, su importancia y aplicación
+
+3. Expresión y actitud
+- Evalúa cómo se expresó el estudiante: uso de lenguaje, claridad, capacidad para argumentar
+- Considera su actitud hacia el aprendizaje y aprovechamiento del apoyo de la IA
+
+4. Recomendaciones para el docente
+- Estrategias para reforzar contenidos de energía
+- Actividades adicionales visuales o experimentales
+ - Recomendaciones para mejorar la interacción en futuras sesiones</div>
+                    </div>
+
+                    <div class="guide-section">
+                        <div class="section-header">
+                            <div class="section-title">📝 Anotaciones - Evaluación (Auditiva)</div>
+                        </div>
+                        <div class="section-content">
+                            <textarea id="notesPromptAuditivaEval" placeholder="Anotaciones del docente sobre la evaluación..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- CIERRE DEL ARCHIVO Y SCRIPTS -->
+        </div>
+        <!-- FIN DE CONTENIDO PRINCIPAL -->
+    </div>
+
+    <script>
+        // ============= MANEJO UNIVERSAL DE EVENTOS PARA MÓVILES =============
+        // Esta función agrega event listeners tanto para click como para touch
+        function addUniversalListener(element, handler) {
+            if (!element) return;
+            // Usar addEventListener una sola vez
+            element.addEventListener('click', handler, {passive: false});
+        }
+
+        // Variable para controlar si ya se inicializaron los listeners
+        let listenersInitialized = false;
+
+        // Función para inicializar todos los event listeners
+        function initializeEventListeners() {
+            // Evitar inicializar múltiples veces
+            if (listenersInitialized) return;
+            listenersInitialized = true;
+            
+            // Tarjetas del menú principal
+            document.querySelectorAll('.menu-card[data-action]').forEach(card => {
+                const handler = function(e) {
+                    e.preventDefault();
+                    const action = this.getAttribute('data-action');
+                    if (action === 'showTheory') showTheorySection();
+                    else if (action === 'showVisual') showDisabilityMenu('visual');
+                    else if (action === 'showAuditiva') showDisabilityMenu('auditiva');
+                };
+                card.addEventListener('click', handler);
+                card.addEventListener('touchend', handler);
+            });
+
+            // Botones de indicadores
+            document.querySelectorAll('.indicator-btn[data-indicator]').forEach(btn => {
+                const handler = function(e) {
+                    e.preventDefault();
+                    const indicator = parseInt(this.getAttribute('data-indicator'));
+                    if (indicator) showIndicator(indicator);
+                };
+                btn.addEventListener('click', handler);
+                btn.addEventListener('touchend', handler);
+            });
+
+            // Botones de acciones
+            document.querySelectorAll('button[data-action], .speak-btn[data-action]').forEach(btn => {
+                const handler = function(e) {
+                    e.preventDefault();
+                    const action = this.getAttribute('data-action');
+                    if (action === 'start') startReadingCurrent();
+                    else if (action === 'pause') pauseReading();
+                    else if (action === 'resume') resumeReading();
+                    else if (action === 'stop') stopReading();
+                    else if (action === 'speak') speakSection(this);
+                    else if (action === 'startVisual') startVisualGuide();
+                    else if (action === 'startAuditiva') startAuditivaGuide();
+                    else if (action === 'print') printVisualGuide();
+                };
+                btn.addEventListener('click', handler);
+                btn.addEventListener('touchend', handler);
+            });
+
+            // Botones de navegación entre pantallas
+            document.querySelectorAll('button[data-screen]').forEach(btn => {
+                const handler = function(e) {
+                    e.preventDefault();
+                    const screen = this.getAttribute('data-screen');
+                    if (screen) showScreen(screen);
+                };
+                btn.addEventListener('click', handler);
+                btn.addEventListener('touchend', handler);
+            });
+
+            // Tarjetas de dispositivo
+            document.querySelectorAll('.device-card[data-device][data-type]').forEach(card => {
+                const handler = function(e) {
+                    e.preventDefault();
+                    const type = this.getAttribute('data-type');
+                    if (type === 'visual') selectVisualDevice(this);
+                    else if (type === 'auditiva') selectAuditivaDevice(this);
+                };
+                card.addEventListener('click', handler);
+                card.addEventListener('touchend', handler);
+            });
+
+            // Botones de copiar prompt
+            document.querySelectorAll('button[data-copy]').forEach(btn => {
+                const handler = function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('data-copy');
+                    if (targetId) copyPrompt(targetId);
+                };
+                btn.addEventListener('click', handler);
+                btn.addEventListener('touchend', handler);
+            });
+        }
+
+        // Navegación entre pantallas
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const el = document.getElementById(id);
+            if (el) el.classList.add('active');
+            // actualizar visibilidad de controles según dispositivo seleccionado
+            setTimeout(() => {
+                try { 
+                    updateFloatingDeviceControls();
+                } catch(e) {
+                    console.error('Error en showScreen:', e);
+                }
+            }, 100);
+        }
+
+        function showTheorySection() {
+            showScreen('theorySection');
+            showIndicator(1);
+        }
+
+        function showDisabilityMenu(type) {
+            if (type === 'visual') showScreen('visualSetup');
+            else if (type === 'auditiva') showScreen('auditivaSetup');
+        }
+
+        // Indicadores en sección teórica
+        function showIndicator(n) {
+            document.querySelectorAll('.indicator-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === (n-1));
+            });
+            document.querySelectorAll('.indicator-content').forEach((c, idx) => {
+                c.classList.toggle('active', idx === (n-1));
+            });
+        }
+
+        // Selección de dispositivo - Visual
+        let selectedVisualDevice = null;
+        function selectVisualDevice(elemOrDevice) {
+            let device = typeof elemOrDevice === 'string' ? elemOrDevice : (elemOrDevice?.dataset?.device || null);
+            if (!device) return;
+            selectedVisualDevice = device;
+            document.querySelectorAll('#visualSetup .device-card').forEach(card => {
+                card.classList.toggle('selected', card.dataset.device === device);
+            });
+            updateVisualStartState();
+            // mostrar/ocultar controles en pantalla si es mobile
+            const ctrl = document.getElementById('visualDeviceControls');
+            if (ctrl) {
+                if (device === 'mobile') { ctrl.style.display = 'flex'; ctrl.setAttribute('aria-hidden','false'); }
+                else { ctrl.style.display = 'none'; ctrl.setAttribute('aria-hidden','true'); }
+            }
+            // persistir preferencia
+            try { localStorage.setItem('preferredDevice', device); } catch(e) {}
+            // actualizar controles flotantes
+            setTimeout(() => updateFloatingDeviceControls(), 100);
+        }
+
+        function updateVisualStartState() {
+            const name = document.getElementById('visualName').value.trim();
+            const section = document.getElementById('visualSection').value.trim();
+            const btn = document.getElementById('visualStartBtn');
+            if (name && section && selectedVisualDevice) btn.disabled = false;
+            else btn.disabled = true;
+        }
+
+        function startVisualGuide() {
+            const name = document.getElementById('visualName').value.trim();
+            const section = document.getElementById('visualSection').value.trim();
+            document.getElementById('visualStudentName').textContent = name;
+            document.getElementById('visualStudentSection').textContent = section;
+            showScreen('visualGuide');
+        }
+
+        // Selección de dispositivo - Auditiva
+        let selectedAuditivaDevice = null;
+        function selectAuditivaDevice(elemOrDevice) {
+            let device = typeof elemOrDevice === 'string' ? elemOrDevice : (elemOrDevice?.dataset?.device || null);
+            if (!device) return;
+            selectedAuditivaDevice = device;
+            document.querySelectorAll('#auditivaSetup .device-card').forEach(card => {
+                card.classList.toggle('selected', card.dataset.device === device);
+            });
+            updateAuditivaStartState();
+            // mostrar/ocultar controles en pantalla si es mobile
+            const ctrl = document.getElementById('auditivaDeviceControls');
+            if (ctrl) {
+                if (device === 'mobile') { ctrl.style.display = 'flex'; ctrl.setAttribute('aria-hidden','false'); }
+                else { ctrl.style.display = 'none'; ctrl.setAttribute('aria-hidden','true'); }
+            }
+            // persistir preferencia
+            try { localStorage.setItem('preferredDevice', device); } catch(e) {}
+            // actualizar controles flotantes
+            setTimeout(() => updateFloatingDeviceControls(), 100);
+        }
+
+        function updateAuditivaStartState() {
+            const name = document.getElementById('auditivaName').value.trim();
+            const section = document.getElementById('auditivaSection').value.trim();
+            const btn = document.getElementById('auditivaStartBtn');
+            if (name && section && selectedAuditivaDevice) btn.disabled = false;
+            else btn.disabled = true;
+        }
+
+        function startAuditivaGuide() {
+            const name = document.getElementById('auditivaName').value.trim();
+            const section = document.getElementById('auditivaSection').value.trim();
+            document.getElementById('auditivaStudentName').textContent = name;
+            document.getElementById('auditivaStudentSection').textContent = section;
+            showScreen('auditivaGuide');
+        }
+
+        // Copiar prompts
+        function copyPrompt(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const text = el.innerText.replace(/Copiar\s*/,'').trim();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Texto copiado al portapapeles');
+                }, () => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); showNotification('Texto copiado al portapapeles'); }
+            catch(e) { alert('No se pudo copiar. Seleccione y copie manualmente.'); }
+            document.body.removeChild(ta);
+        }
+
+        // Variable global para controlar notificaciones
+        let currentNotification = null;
+
+        function showNotification(msg) {
+            // Remover notificación anterior si existe
+            if (currentNotification) {
+                currentNotification.remove();
+                currentNotification = null;
+            }
+            
+            const n = document.createElement('div');
+            n.className = 'notification show';
+            n.textContent = msg;
+            document.body.appendChild(n);
+            currentNotification = n;
+            
+            setTimeout(() => { 
+                if (n.parentNode) {
+                    n.classList.remove('show');
+                    setTimeout(() => {
+                        n.remove();
+                        if (currentNotification === n) {
+                            currentNotification = null;
+                        }
+                    }, 300);
+                }
+            }, 2200);
+        }
+
+        // Lectura por voz mejorada (Web Speech API)
+        // Implementa inicio, pausa, reanudar y detener completo, manteniendo la posición por oraciones
+        const Speech = {
+            utter: null,
+            queue: [],
+            index: 0,
+            isPaused: false,
+            isRunning: false,
+            onfinish: null,
+        };
+
+        // Elemento que actualmente estamos leyendo (para botones en guías)
+        let activeReadTarget = null;
+        let activeReadButton = null;
+
+        function cleanText(text) {
+            if (!text) return '';
+            // Eliminar emojis y símbolos pictográficos comunes
+            try {
+                return text.replace(/([\u{1F300}-\u{1F6FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1F1E6}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}])/gu, '')
+                           .replace(/\uFE0F/g,'')
+                           .replace(/[\t\u000B\f\r]+/g,' ')
+                           .replace(/\s+/g,' ').trim();
+            } catch (e) {
+                // si el navegador no soporta 'u' flag, hacer limpieza básica
+                return text.replace(/[\u2600-\u27BF\u1F300-\u1F6FF]/g,'').replace(/\s+/g,' ').trim();
+            }
+        }
+
+        function buildTheoryText() {
+            const activeIndicator = document.querySelector('.indicator-content.active');
+            if (!activeIndicator) return '';
+            return activeIndicator.innerText.trim();
+        }
+
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) {
+                showNotification('❌ Tu navegador no soporta síntesis de voz. Prueba con Chrome, Edge o Safari.');
+                return;
+            }
+            if (!text || !text.trim()) {
+                showNotification('⚠️ No hay texto para leer');
+                return;
+            }
+            const cleaned = cleanText(text);
+            if (!cleaned) {
+                showNotification('⚠️ No hay contenido válido para leer');
+                return;
+            }
+            
+            // Detener cualquier lectura previa y esperar un momento
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
+            
+            // Esperar un momento para que se cancele completamente
+            setTimeout(() => {
+                // cortar por oraciones
+                const sentences = cleaned.match(/[^\.\!\?]+[\.\!\?]?/g) || [cleaned];
+                Speech.queue = sentences.map(s => s.trim()).filter(Boolean);
+                Speech.index = 0;
+                Speech.isPaused = false;
+                Speech.isRunning = true;
+                Speech.onfinish = () => {
+                    // limpiar estado UI
+                    if (activeReadButton) {
+                        activeReadButton.classList.remove('speaking');
+                        const originalText = activeReadButton.getAttribute('data-original-text');
+                        if (originalText) {
+                            activeReadButton.innerHTML = originalText;
+                        } else {
+                            activeReadButton.innerHTML = '🔊 Leer';
+                        }
+                    }
+                    activeReadTarget = null; 
+                    activeReadButton = null;
+                    Speech.isRunning = false;
+                };
+                speakNextFrom(Speech.index);
+            }, 100);
+        }
+
+        function speakNextFrom(i) {
+            if (!Speech.isRunning || Speech.isPaused) return;
+            if (i >= Speech.queue.length) {
+                Speech.isRunning = false;
+                if (typeof Speech.onfinish === 'function') Speech.onfinish();
+                return;
+            }
+            const sentence = Speech.queue[i];
+            if (!sentence || !sentence.trim()) {
+                Speech.index++;
+                speakNextFrom(Speech.index);
+                return;
+            }
+            
+            const utter = new SpeechSynthesisUtterance(sentence);
+            Speech.utter = utter;
+            utter.lang = 'es-ES';
+            utter.rate = 0.95;
+            utter.pitch = 1;
+            utter.volume = 1;
+            
+            utter.onend = () => {
+                if (Speech.isPaused || !Speech.isRunning) return;
+                Speech.index++;
+                // Pequeño delay entre oraciones para evitar interrupciones
+                setTimeout(() => speakNextFrom(Speech.index), 50);
+            };
+            
+            utter.onerror = (event) => {
+                // Ignorar error "interrupted" ya que es normal al cambiar de texto
+                if (event.error === 'interrupted') {
+                    console.log('Lectura interrumpida (normal)');
+                    return;
+                }
+                console.error('Error en síntesis de voz:', event.error);
+                if (event.error !== 'canceled') {
+                    showNotification('❌ Error en la lectura de voz');
+                }
+                Speech.isRunning = false;
+                if (typeof Speech.onfinish === 'function') Speech.onfinish();
+            };
+            
+            try {
+                window.speechSynthesis.speak(utter);
+            } catch (error) {
+                console.error('Error al intentar hablar:', error);
+                showNotification('❌ Error al iniciar la voz');
+                Speech.isRunning = false;
+                if (typeof Speech.onfinish === 'function') Speech.onfinish();
+            }
+        }
+
+        // iniciar lectura para un elemento (sección práctica o teoría)
+        function startReadingElement(el, btn) {
+            if (!el) {
+                showNotification('⚠️ No se encontró contenido para leer');
+                return;
+            }
+            
+            const text = el.innerText || el.textContent || '';
+            const cleanedText = text.trim();
+            
+            if (!cleanedText) {
+                showNotification('⚠️ Esta sección no contiene texto para leer');
+                return;
+            }
+            
+            if (cleanedText.length < 10) {
+                showNotification('⚠️ El contenido es demasiado corto para leer');
+                return;
+            }
+            
+            // si ya se está leyendo otra cosa, detener primero
+            stopReading(false);
+            
+            activeReadTarget = el;
+            activeReadButton = btn || null;
+            
+            if (activeReadButton) {
+                activeReadButton.classList.add('speaking');
+                const originalText = activeReadButton.textContent;
+                activeReadButton.setAttribute('data-original-text', originalText);
+                activeReadButton.innerHTML = '⏹️ Detener';
+            }
+            
+            speakText(text);
+            showNotification('🔊 Lectura iniciada');
+        }
+
+        // Devuelve la sección .guide-section visible dentro de la pantalla dada (por id)
+        function getVisibleSectionInScreen(screenId) {
+            const screen = document.getElementById(screenId);
+            if (!screen) return null;
+            
+            // Primero intentar con .guide-section
+            let sections = Array.from(screen.querySelectorAll('.guide-section'));
+            
+            // Si no hay guide-section, buscar otros contenedores con contenido
+            if (!sections.length) {
+                sections = Array.from(screen.querySelectorAll('.indicator-content, .section-content'));
+            }
+            
+            if (!sections.length) return null;
+            
+            // Buscar la sección más visible en el viewport
+            let best = null;
+            let bestScore = Infinity;
+            
+            sections.forEach(sec => {
+                const r = sec.getBoundingClientRect();
+                
+                // Calcular qué tan visible está la sección
+                const visibleTop = Math.max(0, r.top);
+                const visibleBottom = Math.min(window.innerHeight, r.bottom);
+                const visibleHeight = visibleBottom - visibleTop;
+                
+                // Si no es visible, ignorar
+                if (visibleHeight <= 0) return;
+                
+                // Preferir secciones más visibles y más arriba
+                const score = r.top >= 0 ? r.top : 10000 - visibleHeight;
+                
+                if (score < bestScore) {
+                    bestScore = score;
+                    best = sec;
+                }
+            });
+            
+            // Si no hay ninguna visible, devolver la primera sección
+            return best || sections[0];
+        }
+
+        function startReadingCurrent() {
+            const activeScreen = document.querySelector('.screen.active')?.id || '';
+            
+            if (!activeScreen) {
+                showNotification('⚠️ No hay una pantalla activa');
+                return;
+            }
+            
+            // Para la sección teórica
+            if (activeScreen === 'theorySection') {
+                const textEl = document.querySelector('.indicator-content.active');
+                if (!textEl) {
+                    showNotification('⚠️ No hay sección teórica seleccionada. Selecciona un indicador primero.');
+                    return;
+                }
+                const text = (textEl.innerText || textEl.textContent || '').trim();
+                if (!text) {
+                    showNotification('⚠️ La sección seleccionada no tiene contenido para leer');
+                    return;
+                }
+                startReadingElement(textEl, document.getElementById('theoryStart'));
+                return;
+            }
+            
+            // Para guías (visualGuide, auditivaGuide u otras)
+            const visibleSec = getVisibleSectionInScreen(activeScreen);
+            if (visibleSec) {
+                const contentEl = visibleSec.querySelector('.section-content') || visibleSec;
+                const text = (contentEl.innerText || contentEl.textContent || '').trim();
+                
+                if (!text) {
+                    showNotification('⚠️ No hay contenido de texto en esta sección');
+                    return;
+                }
+                
+                startReadingElement(contentEl, null);
+            } else {
+                showNotification('⚠️ No se encontró contenido para leer. Desplázate hasta la sección que quieres escuchar.');
+            }
+        }
+
+        function pauseReading() {
+            if (!Speech.isRunning) return;
+            if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
+                window.speechSynthesis.pause();
+                Speech.isPaused = true;
+                if (activeReadButton) activeReadButton.innerHTML = '⏸️ Pausado';
+                showNotification('⏸️ Lectura pausada');
+            }
+        }
+
+        function resumeReading() {
+            if (!Speech.isRunning) return;
+            if ('speechSynthesis' in window && Speech.isPaused) {
+                window.speechSynthesis.resume();
+                Speech.isPaused = false;
+                if (activeReadButton) activeReadButton.innerHTML = '⏹️ Detener';
+                showNotification('▶️ Lectura reanudada');
+            }
+        }
+
+        function stopReading(showMsg = true) {
+            // Forzar detención completa
+            Speech.isRunning = false;
+            Speech.isPaused = false;
+            Speech.queue = [];
+            Speech.index = 0;
+            
+            if ('speechSynthesis' in window) {
+                // Cancelar múltiples veces para asegurar
+                window.speechSynthesis.cancel();
+                setTimeout(() => window.speechSynthesis.cancel(), 50);
+                setTimeout(() => window.speechSynthesis.cancel(), 100);
+            }
+            
+            if (activeReadButton) {
+                activeReadButton.classList.remove('speaking');
+                
+                // Restaurar el texto original del botón
+                const originalText = activeReadButton.getAttribute('data-original-text');
+                if (originalText) {
+                    activeReadButton.innerHTML = originalText;
+                } else {
+                    activeReadButton.innerHTML = '🔊 Leer';
+                }
+            }
+            
+            activeReadTarget = null;
+            activeReadButton = null;
+            
+            if (showMsg) showNotification('⏹️ Lectura detenida');
+        }
+
+        // speakSection para los botones de cada sección
+        function speakSection(btn) {
+            // Si este mismo botón ya está activo y hablando, detener
+            if (activeReadButton === btn && Speech.isRunning) {
+                stopReading();
+                return;
+            }
+            
+            // Si hay otra lectura activa, detenerla primero
+            if (Speech.isRunning) {
+                stopReading(false);
+                // Esperar un momento antes de iniciar la nueva lectura
+                setTimeout(() => startSectionReading(btn), 200);
+                return;
+            }
+            
+            startSectionReading(btn);
+        }
+        
+        function startSectionReading(btn) {
+            // Buscar la sección de contenido
+            const sectionHeader = btn.closest('.section-header');
+            if (!sectionHeader) {
+                showNotification('⚠️ No se encontró la sección para leer');
+                return;
+            }
+            
+            const section = sectionHeader.nextElementSibling;
+            if (!section) {
+                showNotification('⚠️ No hay contenido disponible para leer en esta sección');
+                return;
+            }
+            
+            // Obtener el texto
+            const text = section.innerText || section.textContent || '';
+            if (!text.trim()) {
+                showNotification('⚠️ Esta sección no tiene texto para leer');
+                return;
+            }
+            
+            startReadingElement(section, btn);
+        }
+
+        // Atajos de teclado A = iniciar lectura de la sección visible en pantalla, S = pausar, W = reanudar, D = detener
+        document.addEventListener('keydown', (e) => {
+            const tag = document.activeElement && document.activeElement.tagName;
+            if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+            const key = e.key.toLowerCase();
+            if (key === 'a') startReadingCurrent();
+            else if (key === 's') pauseReading();
+            else if (key === 'w') resumeReading();
+            else if (key === 'd') stopReading();
+        });
+
+        // Controles móviles: mostrar botones flotantes con aria-labels si el viewport es pequeño
+        function ensureMobileControls() {
+            let mc = document.querySelector('.mobile-controls');
+            if (!mc) {
+                mc = document.createElement('div');
+                mc.className = 'mobile-controls';
+                mc.style.cssText = 'position:fixed;bottom:20px;right:20px;display:none;flex-direction:column;gap:15px;z-index:1000;';
+                mc.innerHTML = `
+                    <button class="mobile-control-btn start" aria-label="Botón iniciar lectura" title="Iniciar" onclick="startReadingCurrent()" style="width:80px;height:80px;border-radius:50%;border:none;font-size:32px;cursor:pointer;box-shadow:0 5px 20px rgba(0,0,0,0.3);background:#28a745;color:white;">▶️</button>
+                    <button class="mobile-control-btn pause" aria-label="Botón pausar lectura" title="Pausar" onclick="pauseReading()" style="width:80px;height:80px;border-radius:50%;border:none;font-size:32px;cursor:pointer;box-shadow:0 5px 20px rgba(0,0,0,0.3);background:#ffc107;color:#333;">⏸️</button>
+                    <button class="mobile-control-btn resume" aria-label="Botón reanudar lectura" title="Reanudar" onclick="resumeReading()" style="width:80px;height:80px;border-radius:50%;border:none;font-size:32px;cursor:pointer;box-shadow:0 5px 20px rgba(0,0,0,0.3);background:#17a2b8;color:white;">▶️</button>
+                    <button class="mobile-control-btn stop" aria-label="Botón detener lectura" title="Detener" onclick="stopReading()" style="width:80px;height:80px;border-radius:50%;border:none;font-size:32px;cursor:pointer;box-shadow:0 5px 20px rgba(0,0,0,0.3);background:#dc3545;color:white;">⏹️</button>
+                `;
+                document.body.appendChild(mc);
+            }
+            const activeScreen = document.querySelector('.screen.active')?.id || '';
+            const showOnScreens = ['theorySection','visualGuide','auditivaGuide'];
+            if (window.innerWidth < 768 && showOnScreens.includes(activeScreen)) {
+                mc.style.display = 'flex';
+                mc.classList.add('show');
+            } else {
+                mc.style.display = 'none';
+                mc.classList.remove('show');
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            ensureMobileControls();
+            updateFloatingDeviceControls();
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            ensureMobileControls();
+            updateFloatingDeviceControls();
+        });
+
+        // Floating device controls (global, para teoría y prácticas)
+        function createFloatingDeviceControls() {
+            if (document.getElementById('deviceControlsFloating')) return;
+            const div = document.createElement('div');
+            div.id = 'deviceControlsFloating';
+            div.className = 'device-controls device-controls-floating';
+            div.style.cssText = 'position:fixed;right:20px;top:50%;transform:translateY(-50%);display:none;flex-direction:column;gap:10px;z-index:1400;';
+            div.setAttribute('aria-hidden','true');
+            div.innerHTML = `
+                <button class="control-btn control-start" onclick="startReadingCurrent()" aria-label="Iniciar lectura" style="min-width:120px;padding:10px 14px;border:none;border-radius:12px;font-size:14px;font-weight:bold;cursor:pointer;background:#28a745;color:white;">▶️ Iniciar</button>
+                <button class="control-btn control-pause" onclick="pauseReading()" aria-label="Pausar lectura" style="min-width:120px;padding:10px 14px;border:none;border-radius:12px;font-size:14px;font-weight:bold;cursor:pointer;background:#ffc107;color:#333;">⏸️ Pausar</button>
+                <button class="control-btn control-resume" onclick="resumeReading()" aria-label="Reanudar lectura" style="min-width:120px;padding:10px 14px;border:none;border-radius:12px;font-size:14px;font-weight:bold;cursor:pointer;background:#17a2b8;color:white;">▶️ Reanudar</button>
+                <button class="control-btn control-stop" onclick="stopReading()" aria-label="Detener lectura" style="min-width:120px;padding:10px 14px;border:none;border-radius:12px;font-size:14px;font-weight:bold;cursor:pointer;background:#dc3545;color:white;">⏹️ Detener</button>
+            `;
+            document.body.appendChild(div);
+        }
+
+        function updateFloatingDeviceControls() {
+            createFloatingDeviceControls();
+            const preferred = (() => { try { return localStorage.getItem('preferredDevice'); } catch(e) { return null; } })();
+            const floating = document.getElementById('deviceControlsFloating');
+            if (!floating) return;
+            // Si el usuario preferido es 'mobile' O el dispositivo es pequeño, mostrar flotante cuando estemos en teoría o en una guía
+            const activeScreen = document.querySelector('.screen.active')?.id || '';
+            const showOnScreens = ['theorySection','visualGuide','auditivaGuide'];
+            const isMobileSize = window.innerWidth < 768;
+            const shouldShow = (preferred === 'mobile' || isMobileSize) && showOnScreens.includes(activeScreen);
+            
+            if (shouldShow) {
+                floating.style.display = 'flex';
+                floating.setAttribute('aria-hidden','false');
+            } else {
+                floating.style.display = 'none';
+                floating.setAttribute('aria-hidden','true');
+            }
+        }
+
+        // positionFloatingNear ya no se usa; los controles flotantes son fijos en centro-derecha
+
+        // Al cargar, si hay preferencia previa, aplicarla a las pantallas de setup
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar event listeners
+            initializeEventListeners();
+            
+            // Inicializar controles móviles
+            ensureMobileControls();
+            updateFloatingDeviceControls();
+            
+            // Aplicar preferencias guardadas
+            try {
+                const pref = localStorage.getItem('preferredDevice');
+                if (pref) {
+                    // intentar marcar las tarjetas correspondientes si están presentes
+                    const v = document.querySelector('#visualSetup .device-card[data-device="' + pref + '"]');
+                    if (v) selectVisualDevice(v);
+                    const a = document.querySelector('#auditivaSetup .device-card[data-device="' + pref + '"]');
+                    if (a) selectAuditivaDevice(a);
+                }
+            } catch(e) {}
+        });
+
+        function printVisualGuide() {
+            window.print();
+        }
+
+        // Habilitar botones cuando se llenen los formularios
+        document.addEventListener('DOMContentLoaded', () => {
+            const visualName = document.getElementById('visualName');
+            const visualSection = document.getElementById('visualSection');
+            const auditivaName = document.getElementById('auditivaName');
+            const auditivaSection = document.getElementById('auditivaSection');
+            
+            if (visualName) visualName.addEventListener('input', updateVisualStartState);
+            if (visualSection) visualSection.addEventListener('input', updateVisualStartState);
+            if (auditivaName) auditivaName.addEventListener('input', updateAuditivaStartState);
+            if (auditivaSection) auditivaSection.addEventListener('input', updateAuditivaStartState);
+        });
+    </script>
+
+</body>
+</html>
