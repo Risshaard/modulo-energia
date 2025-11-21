@@ -411,16 +411,16 @@
         }
 
         .speak-btn {
-            padding: 12px 24px;
+            padding: 8px 16px;
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             border: none;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 17px;
+            font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
             font-weight: 600;
@@ -680,9 +680,9 @@
         }
         
         .device-controls-floating .control-btn {
-            min-width: 50px;
-            padding: 8px 10px;
-            font-size: 12px;
+            min-width: 45px;
+            padding: 6px 8px;
+            font-size: 11px;
         }
         
         @media (max-width: 768px) {
@@ -690,17 +690,23 @@
                 right: 5px;
             }
             .device-controls-floating .control-btn {
-                min-width: 45px;
-                padding: 6px 8px;
+                min-width: 35px;
+                padding: 4px 5px;
+                font-size: 9px;
+            }
+            
+            .device-controls .control-btn {
+                min-width: 70px;
+                padding: 6px 10px;
                 font-size: 11px;
             }
         }
 
         .device-controls .control-btn {
-            min-width: 120px;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 14px;
+            min-width: 90px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
         }
@@ -790,13 +796,15 @@
             
             /* Hacer botones más compactos en móvil */
             .btn {
-                padding: 12px 24px;
-                font-size: 16px;
+                padding: 8px 16px;
+                font-size: 13px;
             }
             
             .speak-btn {
-                padding: 8px 16px;
-                font-size: 14px;
+                padding: 5px 10px;
+                font-size: 11px;
+                border-radius: 15px;
+                gap: 5px;
             }
             
             .section-header {
