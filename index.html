@@ -910,6 +910,78 @@
             display: flex;
         }
 
+        /* Área de imágenes para actividades */
+        .image-upload-container {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #11998e;
+        }
+
+        .image-upload-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .image-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+        }
+
+        .uploaded-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .uploaded-image-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .uploaded-image-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .remove-image-btn:hover {
+            background: rgba(220, 53, 69, 1);
+            transform: scale(1.1);
+        }
+
         @media (max-width: 768px) {
             .floating-home-btn {
                 width: 55px;
@@ -917,6 +989,14 @@
                 font-size: 24px;
                 bottom: 20px;
                 right: 20px;
+            }
+            
+            .uploaded-images {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .uploaded-image-item img {
+                height: 100px;
             }
         }
     </style>
@@ -1037,7 +1117,7 @@
                 <h2>🔬 Indicador 2: Avances científicos y tecnológicos</h2>
                 
                 <div style="text-align: center; margin: 30px 0;">
-                    <img src="https://images.unsplash.com/photo-1530569673472-307dc017a82d?w=800" alt="Tecnología y Energía" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800" alt="Tecnología y Energía" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
                 </div>
                 
                 <p><strong>Explicar los avances científicos y tecnológicos relacionados con la aplicación de diversas formas de energía para el uso doméstico, industrial y la salud.</strong></p>
@@ -1301,6 +1381,11 @@ Recuerda hablarme en voz, despacio y con lenguaje claro. El objetivo es ayudarme
                         </div>
                         <div class="section-content">
                             <textarea id="notesPromptVisual1" placeholder="Anotaciones de la práctica con la IA..."></textarea>
+                            <div class="image-upload-container">
+                                <input type="file" id="imageUploadVisual1" accept="image/*" multiple style="display: none;">
+                                <button class="image-upload-btn" onclick="document.getElementById('imageUploadVisual1').click()">📷 Agregar Imágenes</button>
+                                <div class="uploaded-images" id="imagesVisual1"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -2512,6 +2597,49 @@ Por favor, realiza una evaluación formativa completa, estructurada en los sigui
             window.print();
         }
 
+        // Manejo de subida de imágenes
+        function setupImageUpload(inputId, containerId) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            
+            if (!input || !container) return;
+            
+            input.addEventListener('change', function(e) {
+                const files = Array.from(e.target.files);
+                
+                files.forEach(file => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(event) {
+                            const imageDiv = document.createElement('div');
+                            imageDiv.className = 'uploaded-image-item';
+                            
+                            const img = document.createElement('img');
+                            img.src = event.target.result;
+                            img.alt = file.name;
+                            
+                            const removeBtn = document.createElement('button');
+                            removeBtn.className = 'remove-image-btn';
+                            removeBtn.innerHTML = '✕';
+                            removeBtn.onclick = function() {
+                                imageDiv.remove();
+                            };
+                            
+                            imageDiv.appendChild(img);
+                            imageDiv.appendChild(removeBtn);
+                            container.appendChild(imageDiv);
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    }
+                });
+                
+                // Limpiar input para permitir subir la misma imagen nuevamente
+                e.target.value = '';
+            });
+        }
+
         // Habilitar botones cuando se llenen los formularios
         document.addEventListener('DOMContentLoaded', () => {
             const visualName = document.getElementById('visualName');
@@ -2523,6 +2651,9 @@ Por favor, realiza una evaluación formativa completa, estructurada en los sigui
             if (visualSection) visualSection.addEventListener('input', updateVisualStartState);
             if (auditivaName) auditivaName.addEventListener('input', updateAuditivaStartState);
             if (auditivaSection) auditivaSection.addEventListener('input', updateAuditivaStartState);
+            
+            // Inicializar subida de imágenes
+            setupImageUpload('imageUploadVisual1', 'imagesVisual1');
         });
     </script>
 
