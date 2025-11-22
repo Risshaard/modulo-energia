@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -22,30 +22,30 @@
             max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 25px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #1e3c72 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #ffffff;
-            padding: 50px 40px;
+            padding: 60px 40px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            border-bottom: 4px solid #0066cc;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border-bottom: 5px solid #5a67d8;
         }
 
         .header h1 {
-            font-size: 2.8em;
+            font-size: 3em;
             margin-bottom: 15px;
-            font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            letter-spacing: -0.5px;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            letter-spacing: -1px;
         }
 
         .header p {
-            font-size: 1.3em;
+            font-size: 1.4em;
             opacity: 0.95;
             font-weight: 500;
         }
@@ -875,6 +875,50 @@
             backdrop-filter: blur(4px);
             border-left: 6px solid #28a745; /* toque verde */
         }
+
+        /* Botón flotante para volver al menú */
+        .floating-home-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            font-size: 28px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .floating-home-btn:hover {
+            transform: scale(1.1) rotate(360deg);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.7);
+        }
+
+        .floating-home-btn:active {
+            transform: scale(0.95);
+        }
+
+        .floating-home-btn.show {
+            display: flex;
+        }
+
+        @media (max-width: 768px) {
+            .floating-home-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1678,6 +1722,9 @@ Por favor, realiza una evaluación formativa completa, estructurada en los sigui
         <!-- FIN DE CONTENIDO PRINCIPAL -->
     </div>
 
+    <!-- Botón flotante para volver al menú -->
+    <button class="floating-home-btn" id="floatingHomeBtn" aria-label="Volver al menú principal">🏠</button>
+
     <script>
         // ============= MANEJO UNIVERSAL DE EVENTOS PARA MÓVILES =============
         // Esta función agrega event listeners tanto para click como para touch
@@ -1778,6 +1825,17 @@ Por favor, realiza una evaluación formativa completa, estructurada en los sigui
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             const el = document.getElementById(id);
             if (el) el.classList.add('active');
+            
+            // Mostrar/ocultar botón flotante
+            const floatingBtn = document.getElementById('floatingHomeBtn');
+            if (floatingBtn) {
+                if (id === 'mainMenu') {
+                    floatingBtn.classList.remove('show');
+                } else {
+                    floatingBtn.classList.add('show');
+                }
+            }
+            
             // actualizar visibilidad de controles según dispositivo seleccionado
             setTimeout(() => {
                 try { 
@@ -2422,6 +2480,16 @@ Por favor, realiza una evaluación formativa completa, estructurada en los sigui
         document.addEventListener('DOMContentLoaded', () => {
             // Inicializar event listeners
             initializeEventListeners();
+            
+            // Event listener para botón flotante
+            const floatingBtn = document.getElementById('floatingHomeBtn');
+            if (floatingBtn) {
+                floatingBtn.addEventListener('click', () => showScreen('mainMenu'));
+                floatingBtn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    showScreen('mainMenu');
+                });
+            }
             
             // Inicializar controles móviles
             ensureMobileControls();
